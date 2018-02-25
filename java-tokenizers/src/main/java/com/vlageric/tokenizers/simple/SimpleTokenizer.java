@@ -1,21 +1,25 @@
 package com.vlageric.tokenizers.simple;
 
+import com.vlageric.tokenizers.Tokenizer;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Tokenizer {
+public class SimpleTokenizer implements Tokenizer {
     private final Phrases phrases;
 
-    public Tokenizer() {
+    public SimpleTokenizer() {
         this.phrases = Phrases.empty();
     }
 
-    public Tokenizer(Phrases phrases) {
+    public SimpleTokenizer(Phrases phrases) {
         this.phrases = phrases;
     }
+
+    @Override
     public List<String> tokenize(String text) {
         String lowercasedText = text.toLowerCase();
         Map<String, String> placeholders = new HashMap<>();
