@@ -69,3 +69,29 @@ if __name__ == "__main__":
     query_service = QueryService(GoogleScraper())
 
     main(query_source, query_service, handle)
+
+def test_main():
+    query_source = ["test1", "test2", "test3"]
+    class TestQueryService(object):
+        def run(self, query: str):
+            if query == "test3":
+                return (True, ["domain3"])
+            elif query == "test2":
+                return (True, ["domain3", "domain2"])
+            elif query == "test1":
+                return (True, ["domain3", "domain2", "domain1"])
+            else:
+                return (False, query, None)
+
+    query_service = TestQueryService()
+    expected_frequencies = {"domain1": 1, "domain2": 2, "domain3": 3}
+    actual_frequencies = None
+
+    def test_handler(results):
+        nonlocal actual_frequencies
+        domains = itertools.chain(*map(lambda x: x[1], results))
+        actual_frequencies = Counter(domains)
+    
+    main(query_source, query_service, test_handler)
+
+    assert actual_frequencies == expected_frequencies
